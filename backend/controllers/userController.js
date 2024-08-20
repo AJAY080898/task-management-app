@@ -1,9 +1,6 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
 const getUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 
@@ -20,9 +17,6 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
 const updateUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 

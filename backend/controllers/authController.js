@@ -34,15 +34,26 @@ const registerUser = async (req, res) => {
 const authUser = async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    console.log('Email: ', email);
+    console.log('Password: ', password);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id),
-        });
+    const user = await User.findOne({ email });
+    console.log('User found: ', user);
+
+    if (user) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        console.log('Password match:', isMatch);
+
+        if (isMatch) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                token: generateToken(user._id),
+            });
+        } else {
+            res.status(401).json({ message: 'Invalid email or password' });
+        }
     } else {
         res.status(401).json({ message: 'Invalid email or password' });
     }
